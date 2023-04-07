@@ -1,0 +1,19 @@
+extends layout
+
+block content
+    h1= title
+    -let results=[{Cust_Name: "kalyani",Cust_Age:21,Mail_Id:"Kalyani@gmail.com"},{Cust_Name: "Sudheer",Cust_Age:25,Mail_Id:"Sudheer@gmail.com"},{Cust_Name: "Ramya",Cust_Age:28,Mail_Id:"ramya@gmail.com"}]
+    div.container-fliud
+        div.row
+            each item,ind in results 
+                div(class='col-sm-2' onclick=`buy(${ind})`) 
+                    p Name  is #{item.Cust_Name}
+                    p Age  is #{item.Cust_Age}
+                    p Mail_Id: #{item.Mail_Id}  
+
+    each ite,index in results
+           p value at index #{index} is : #{ite.Cust_Name},#{ite.Cust_Age},#{ite.Mail_Id}
+    script. 
+        function buy(i){
+            alert("You purchased item "+(i+1))
+        }
