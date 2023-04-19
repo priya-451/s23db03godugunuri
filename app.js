@@ -4,12 +4,31 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+require('dotenv').config();
+const connectionString =
+process.env.MONGO_CON
+mongoose = require('mongoose');
+mongoose.connect(connectionString,
+{useNewUrlParser: true,
+useUnifiedTopology: true});
+
+//Get the default connection
+var db = mongoose.connection;
+//Bind connection to error event
+db.on('error', console.error.bind(console, 'MongoDB connectionerror:'));
+db.once("open", function(){
+console.log("Connection to DB succeeded")});
+
+
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var CustomerRouter = require('./routes/Customer');
 var SelectorRouter = require('./routes/Selector');
 var boardRouter = require('./routes/board');
+var resourceRouter = require('./routes/resource');
 
+var Customer = require('./models/customer');
 
 var app = express();
 
@@ -28,6 +47,8 @@ app.use('/users', usersRouter);
 app.use('/Customer', CustomerRouter);
 app.use('/Selector', SelectorRouter);
 app.use('/board', boardRouter);
+app.use('/resource', resourceRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -44,5 +65,48 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// We can seed the collection if needed on
+//server start
+async function recreateDB(){
+// Delete everything
+await Customer.deleteMany();
+
+let instance1 = new
+Customer({Cust_Name:"kalyani", Mail_Id:'Kalyani@gmail.com',
+Cust_Age:21});
+
+let instance2 = new
+Customer({Cust_Name:"Sudheer", Mail_Id:'Sudheer@gmail.com',
+Cust_Age:25});
+
+let instance3 = new
+Customer({Cust_Name:"Ramya", Mail_Id:'ramya@gmail.com',
+Cust_Age:28});
+
+
+instance1.save().then(doc=>{
+  console.log("First object saved")}
+  ).catch(err=>{
+  console.error(err)})
+
+  instance2.save().then(doc=>{
+    console.log("Second object saved")}
+    ).catch(err=>{
+    console.error(err)})
+    
+
+    instance3.save().then(doc=>{
+      console.log("Third object saved")}
+      ).catch(err=>{
+      console.error(err)})
+
+  }
+
+  
+      
+
+let reseed = true;
+if (reseed) { recreateDB();}
 
 module.exports = app;
