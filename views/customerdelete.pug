@@ -1,0 +1,59 @@
+extends layout
+
+block content
+  h1= title
+
+  if (toShow == null)
+    h2 No instance to delete
+  else
+    - let customerid = toShow._id
+    - let Cust_Name = toShow.Cust_Name
+    - let Mail_Id = toShow.Mail_Id
+    - let Cust_Age = toShow.Cust_Age
+    - let actionid = "/resource/customer/" + customerid
+
+    script.
+      let actionid = "#{actionid}"
+
+    div
+      div.row
+        div(class='customerAttr mr-3') customer ID is:
+        div #{customerid}
+
+      div.row
+        div(class='customerAttr mr-3') Cust_Name is:
+        div #{Cust_Name}
+
+      div.row
+        div(class='customerAttr mr-3') Cust_Age is:
+        div #{Cust_Age}
+
+      div.row
+        div(class='customerAttr mr-3') Mail_Id is:
+        div #{Mail_Id}
+
+      button(class="btn btn-danger m-2" onclick="deleteOnid()") Delete
+      button(class="btn btn-secondary m-2" onclick="cancel()") Cancel
+
+    script.
+      function cancel() {
+        // Go back to the home page for the customer collection
+        window.location.href='/customer'
+      }
+
+      function deleteOnid() {
+        console.log("starting delete")
+        // delete first
+        fetch(actionid, {
+          method: 'DELETE' // Don't need a body for the delete
+        }).then((resp) => {
+          return resp.json(); // or resp.text() or whatever the server sends
+        }).then((body) => {
+          alert("Delete succeeded")
+          window.location.href='/customer'
+          // TODO handle body
+        }).catch((error) => {
+          // TODO handle error
+          alert("Delete failed " + error )
+        });
+      }

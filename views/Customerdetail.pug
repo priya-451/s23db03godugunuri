@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  h1= title
+  - let customerid = toShow._id
+  - let Cust_Name = toShow.Cust_Name
+  - let Mail_Id = toShow.Mail_Id
+  - let Cust_Age = toShow.Cust_Age
+  div
+    div.row
+      div.customerAttr.mr-3 Customer ID is:
+      div #{customerid}
+    div.row
+      div.customerAttr.mr-3 Customer Name is:
+      div #{Cust_Name}
+    div.row
+      div.customerAttr.mr-3 Customer Email is:
+      div #{Mail_Id}
+    div.row
+      div.customerAttr.mr-3 Customer Age is:
+      div #{Cust_Age}

@@ -1,0 +1,35 @@
+extends layout
+block content
+  h1= title
+   form(id='customerForm', action="/resource/customer", method="POST")
+    div.form-group
+      label.customerAttr(for='Cust_Name') Cust_Name
+      input#Cust_Name(type='text', name='Cust_Name')
+
+    div.form-group
+      label.customerAttr(for='Mail_Id') Mail_Id
+      input#Mail_Id(type='text', name='Mail_Id')
+
+    div.form-group
+      label.customerAttr(for='Cust_Age') Cust_Age
+      input#Cust_Age(type='number', name='Cust_Age')
+
+    input(type="submit")
+
+    script.
+      document.forms['customerForm'].addEventListener('submit', (event) => {
+        event.preventDefault();
+        // TODO do something here to show user that form is being submitted
+        fetch(event.target.action, {
+          method: 'POST',
+          body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+        }).then((resp) => {
+          return resp.json(); // or resp.text() or whatever the server sends
+        }).then((body) => {
+          alert("Save succeded")
+          // TODO handle body
+        }).catch((error) => {
+          // TODO handle error
+          alert("Save failed " + error )
+        });
+      });

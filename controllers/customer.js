@@ -45,17 +45,17 @@ res.send(`{"error": ${err}}`);
 
 // Handle customer delete on DELETE.
 exports.customer_delete = async function(req, res) {
-console.log("delete " + req.params.id)
-try {
-result = await customer.findByIdAndDelete( req.params.id)
-console.log("Removed " + result)
-res.send(result)
-} catch (err) {
-res.status(500)
-res.send(`{"error": Error deleting ${err}}`);
-}
-};
-
+    console.log("delete " + req.params.id)
+    try {
+    result = await Customer.findByIdAndDelete( req.params.id)
+    console.log("Removed " + result)
+    res.send(result)
+    } catch (err) {
+    res.status(500)
+    res.send(`{"error": Error deleting ${err}}`);
+    }
+    };
+    
 // Handle customer update form on PUT.
 //exports.customer_update_put = function(req, res) {
 //res.send('NOT IMPLEMENTED: customer update PUT' + req.params.id);
@@ -108,6 +108,71 @@ exports.customer_update_put = async function(req, res) {
    failed`);
     }
    };
+   // Handle a show one view with id specified by query
+exports.Customer_view_one_Page = async function(req, res) {
+    console.log("single view for id " + req.query.id)
+    try{
+    result = await Customer.findById( req.query.id)
+    res.render('Customerdetail',
+    { title: 'Customer Detail', toShow: result });
+    }
+    catch(err){
+    res.status(500)
+    res.send(`{'error': '${err}'}`);
+    }
+    };
+
+    // Handle building the view for creating a costume.
+// No body, no in path parameter, no query.
+// Does not need to be async
+exports.customer_create_Page = function(req, res) {
+  console.log("create view")
+    try{
+      res.render('customercreate', { title: 'Customer Create'});
+    }
+    catch(err){
+      res.status(500)
+      res.send(`{'error': '${err}'}`);
+    }
+};
+// Handle building the view for updating a customer.
+// query provides the id
+exports.customer_update_Page = async function(req, res) {
+    console.log("update view for item "+req.query.id)
+    try{
+      let result = await Customer.findById(req.query.id)
+      res.render('customerupdate', { title: 'customer Update', toShow: result });
+    }
+    catch(err){
+      res.status(500)
+      res.send(`{'error': '${err}'}`);
+    }
+};
+// Handle a delete one view with id from query
+exports.customer_delete_Page = async function(req, res) {
+  console.log("Delete view for id " + req.query.id)
+    try{
+      result = await Customer.findById(req.query.id)
+      res.render('customerdelete', { title: 'Customer Delete', toShow:
+result });
+    }
+    catch(err){
+      res.status(500)
+      res.send(`{'error': '${err}'}`);
+    }
+};
+
+exports.sample = function(req, res) {
+    console.log("create view")
+      try{
+        res.render('sample', { title: 'Customer Create'});
+      }
+      catch(err){
+        res.status(500)
+        res.send(`{'error': '${err}'}`);
+      }
+  };
+    
     
 
 
