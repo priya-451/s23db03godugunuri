@@ -2,24 +2,28 @@ extends layout
 
 block content
   h1= title
-  //- - let items = ['Customer_type','size','cost']
   - let items = results;
   - let o;
   script.
     function buy(x){
       alert('purchased item ' + x)
-   } 
+    } 
   div(class='container-fluid')
     div(class='row m-1')
-    div(class="row row-cols-1 row-cols-sm-4 g-6")
-      each item,index in items
-        - let destination = `dispatch(\"/Customer/update?id=${item._id}\")`
-      
-        div(class="card text-white bg-dark mb-3" class='col' class='card' class='card-body' class='card-text' onclick='buy('+index+')') Item #{item.Cust_Name}(#{item.Mail_Id})is #{item.Cust_Age} 
-
-          <br>
-          button.btn( class="btn-success ml-1", onclick= destination) Update
-
+      div(class="row row-cols-1 row-cols-sm-4 g-6")
+        each item, index in items
+          - let destination = `dispatch(\"/Customer/update?id=${item._id}\")`
+          - let deserve = `dispatch(\"/Customer/delete?id=${item._id}\")`
+          - let define = `dispatch(\"/Customer/detail?id=${item._id}\")`
+          div(class="card text-white bg-dark mb-3 col")
+            .card-body(onclick='buy('+index+')')
+              p Item #{item.Cust_Name}(#{item.Mail_Id}) is #{item.Cust_Age} 
+              p
+                button.btn.btn-success.ml-1(onclick= destination) Update
+              p
+                button.btn.btn-success.ml-1(onclick= deserve) Delete
+              p
+                button.btn.btn-success.ml-1(onclick= define) Detail
   script.
     function dispatch(path){
       window.location.href=path
